@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+    <!-- 引入了数据源的资源文件-->
+    <bean id="placeholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:db.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--配置数据源类型-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <!--数据库连接的基本配置-->
+        <property name="driverClassName" value="${driver}"/>
+        <property name="url" value="${url}" />
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+        <!--初始化参数配置 -->
+        <property name="initialSize" value="8"/>
+        <property name="maxActive" value="8"/>
+        <property name="minIdle" value="2"/>
+        <property name="maxWait" value="30000"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="timeBetweenEvictionRunsMillis" value="6"/>
+    </bean>
+
+    <!--创建SqlSessionFactory对象 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--注入数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!--扫描mapper下的所有映射文件 -->
+        <property name="mapperLocations" value="classpath:com/longchang/www/mapper/*.xml" />
+        <!-- 读取mybatis配置文件-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    </bean>
+
+    <!--配置数据库访问层连接接口扫描，自动创建实现类 -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--注入连接工厂bean -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!-- 扫描的数据访问层接口所在的包-->
+        <property name="basePackage" value="com.longchang.www.mapper"/>
+    </bean>
+
+    <!-- 配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--配置aop声明式事务 -->
+    <!--事务特性-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" rollback-for="java.lang.Exception" isolation="DEFAULT" propagation="REQUIRED"/>
+            <tx:method name="insert*" rollback-for="java.lang.Exception" propagation="REQUIRED"/>
+            <tx:method name="update*" rollback-for="java.lang.Exception" propagation="REQUIRED"/>
+            <tx:method name="del*" rollback-for="java.lang.Exception" propagation="REQUIRED"/>
+            <tx:method name="search*" rollback-for="java.lang.Exception" propagation="SUPPORTS"/>
+            <tx:method name="find*" rollback-for="java.lang.Exception" propagation="SUPPORTS"/>
+            <tx:method name="select*" rollback-for="java.lang.Exception" propagation="SUPPORTS"/>
+            <tx:method name="*" rollback-for="java.lang.Exception" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--事务切入位置：将特性和切入点结合-->
+    <aop:config>
+        <aop:pointcut id="pointcut" expression="execution(* com.longchang.www.service.*.*(..))"/>
+        <aop:advisor id="advisor" advice-ref="txAdvice" pointcut-ref="pointcut"/>
+    </aop:config>
+
+    <!--扫描注册bean：业务层，数据访问层 -->
+    <context:component-scan base-package="com.longchang.www.service,com.longchang.www.mapper"/>
+
+
+</beans>

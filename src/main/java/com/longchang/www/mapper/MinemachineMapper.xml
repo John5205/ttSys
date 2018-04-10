@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longchang.www.mapper.MinemachineMapper" >
+  <resultMap id="BaseResultMap" type="com.longchang.www.entity.Minemachine" >
+    <id column="mmId" property="mmid" jdbcType="INTEGER" />
+    <result column="mineMachineName" property="minemachinename" jdbcType="VARCHAR" />
+    <result column="mineMachineNo" property="minemachineno" jdbcType="VARCHAR" />
+    <result column="markOne" property="markone" jdbcType="VARCHAR" />
+    <result column="markTwo" property="marktwo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    mmId, mineMachineName, mineMachineNo, markOne, markTwo
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.longchang.www.entity.MinemachineExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from wk_minemachine
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from wk_minemachine
+    where mmId = #{mmid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from wk_minemachine
+    where mmId = #{mmid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.longchang.www.entity.MinemachineExample" >
+    delete from wk_minemachine
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.longchang.www.entity.Minemachine" >
+    insert into wk_minemachine (mmId, mineMachineName, mineMachineNo, 
+      markOne, markTwo)
+    values (#{mmid,jdbcType=INTEGER}, #{minemachinename,jdbcType=VARCHAR}, #{minemachineno,jdbcType=VARCHAR}, 
+      #{markone,jdbcType=VARCHAR}, #{marktwo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.longchang.www.entity.Minemachine" >
+    insert into wk_minemachine
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mmid != null" >
+        mmId,
+      </if>
+      <if test="minemachinename != null" >
+        mineMachineName,
+      </if>
+      <if test="minemachineno != null" >
+        mineMachineNo,
+      </if>
+      <if test="markone != null" >
+        markOne,
+      </if>
+      <if test="marktwo != null" >
+        markTwo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mmid != null" >
+        #{mmid,jdbcType=INTEGER},
+      </if>
+      <if test="minemachinename != null" >
+        #{minemachinename,jdbcType=VARCHAR},
+      </if>
+      <if test="minemachineno != null" >
+        #{minemachineno,jdbcType=VARCHAR},
+      </if>
+      <if test="markone != null" >
+        #{markone,jdbcType=VARCHAR},
+      </if>
+      <if test="marktwo != null" >
+        #{marktwo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.longchang.www.entity.MinemachineExample" resultType="java.lang.Integer" >
+    select count(*) from wk_minemachine
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update wk_minemachine
+    <set >
+      <if test="record.mmid != null" >
+        mmId = #{record.mmid,jdbcType=INTEGER},
+      </if>
+      <if test="record.minemachinename != null" >
+        mineMachineName = #{record.minemachinename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.minemachineno != null" >
+        mineMachineNo = #{record.minemachineno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.markone != null" >
+        markOne = #{record.markone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.marktwo != null" >
+        markTwo = #{record.marktwo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update wk_minemachine
+    set mmId = #{record.mmid,jdbcType=INTEGER},
+      mineMachineName = #{record.minemachinename,jdbcType=VARCHAR},
+      mineMachineNo = #{record.minemachineno,jdbcType=VARCHAR},
+      markOne = #{record.markone,jdbcType=VARCHAR},
+      markTwo = #{record.marktwo,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.longchang.www.entity.Minemachine" >
+    update wk_minemachine
+    <set >
+      <if test="minemachinename != null" >
+        mineMachineName = #{minemachinename,jdbcType=VARCHAR},
+      </if>
+      <if test="minemachineno != null" >
+        mineMachineNo = #{minemachineno,jdbcType=VARCHAR},
+      </if>
+      <if test="markone != null" >
+        markOne = #{markone,jdbcType=VARCHAR},
+      </if>
+      <if test="marktwo != null" >
+        markTwo = #{marktwo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where mmId = #{mmid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.longchang.www.entity.Minemachine" >
+    update wk_minemachine
+    set mineMachineName = #{minemachinename,jdbcType=VARCHAR},
+      mineMachineNo = #{minemachineno,jdbcType=VARCHAR},
+      markOne = #{markone,jdbcType=VARCHAR},
+      markTwo = #{marktwo,jdbcType=VARCHAR}
+    where mmId = #{mmid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longchang.www.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.longchang.www.entity.User" >
+    <id column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="phoneNo" property="phoneno" jdbcType="INTEGER" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="identityNo" property="identityno" jdbcType="VARCHAR" />
+    <result column="accountBalance" property="accountbalance" jdbcType="INTEGER" />
+    <result column="haveMachineNo" property="havemachineno" jdbcType="INTEGER" />
+    <result column="markOne" property="markone" jdbcType="VARCHAR" />
+    <result column="markTwo" property="marktwo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    userId, userName, password, phoneNo, email, identityNo, accountBalance, haveMachineNo, 
+    markOne, markTwo
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.longchang.www.entity.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from wk_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from wk_user
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from wk_user
+    where userId = #{userid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.longchang.www.entity.UserExample" >
+    delete from wk_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.longchang.www.entity.User" >
+    insert into wk_user (userId, userName, password, 
+      phoneNo, email, identityNo, 
+      accountBalance, haveMachineNo, markOne, 
+      markTwo)
+    values (#{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{phoneno,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{identityno,jdbcType=VARCHAR}, 
+      #{accountbalance,jdbcType=INTEGER}, #{havemachineno,jdbcType=INTEGER}, #{markone,jdbcType=VARCHAR}, 
+      #{marktwo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.longchang.www.entity.User" >
+    insert into wk_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="username != null" >
+        userName,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="phoneno != null" >
+        phoneNo,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="identityno != null" >
+        identityNo,
+      </if>
+      <if test="accountbalance != null" >
+        accountBalance,
+      </if>
+      <if test="havemachineno != null" >
+        haveMachineNo,
+      </if>
+      <if test="markone != null" >
+        markOne,
+      </if>
+      <if test="marktwo != null" >
+        markTwo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneno != null" >
+        #{phoneno,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="identityno != null" >
+        #{identityno,jdbcType=VARCHAR},
+      </if>
+      <if test="accountbalance != null" >
+        #{accountbalance,jdbcType=INTEGER},
+      </if>
+      <if test="havemachineno != null" >
+        #{havemachineno,jdbcType=INTEGER},
+      </if>
+      <if test="markone != null" >
+        #{markone,jdbcType=VARCHAR},
+      </if>
+      <if test="marktwo != null" >
+        #{marktwo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.longchang.www.entity.UserExample" resultType="java.lang.Integer" >
+    select count(*) from wk_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update wk_user
+    <set >
+      <if test="record.userid != null" >
+        userId = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null" >
+        userName = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phoneno != null" >
+        phoneNo = #{record.phoneno,jdbcType=INTEGER},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.identityno != null" >
+        identityNo = #{record.identityno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountbalance != null" >
+        accountBalance = #{record.accountbalance,jdbcType=INTEGER},
+      </if>
+      <if test="record.havemachineno != null" >
+        haveMachineNo = #{record.havemachineno,jdbcType=INTEGER},
+      </if>
+      <if test="record.markone != null" >
+        markOne = #{record.markone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.marktwo != null" >
+        markTwo = #{record.marktwo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update wk_user
+    set userId = #{record.userid,jdbcType=INTEGER},
+      userName = #{record.username,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      phoneNo = #{record.phoneno,jdbcType=INTEGER},
+      email = #{record.email,jdbcType=VARCHAR},
+      identityNo = #{record.identityno,jdbcType=VARCHAR},
+      accountBalance = #{record.accountbalance,jdbcType=INTEGER},
+      haveMachineNo = #{record.havemachineno,jdbcType=INTEGER},
+      markOne = #{record.markone,jdbcType=VARCHAR},
+      markTwo = #{record.marktwo,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.longchang.www.entity.User" >
+    update wk_user
+    <set >
+      <if test="username != null" >
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneno != null" >
+        phoneNo = #{phoneno,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="identityno != null" >
+        identityNo = #{identityno,jdbcType=VARCHAR},
+      </if>
+      <if test="accountbalance != null" >
+        accountBalance = #{accountbalance,jdbcType=INTEGER},
+      </if>
+      <if test="havemachineno != null" >
+        haveMachineNo = #{havemachineno,jdbcType=INTEGER},
+      </if>
+      <if test="markone != null" >
+        markOne = #{markone,jdbcType=VARCHAR},
+      </if>
+      <if test="marktwo != null" >
+        markTwo = #{marktwo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.longchang.www.entity.User" >
+    update wk_user
+    set userName = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      phoneNo = #{phoneno,jdbcType=INTEGER},
+      email = #{email,jdbcType=VARCHAR},
+      identityNo = #{identityno,jdbcType=VARCHAR},
+      accountBalance = #{accountbalance,jdbcType=INTEGER},
+      haveMachineNo = #{havemachineno,jdbcType=INTEGER},
+      markOne = #{markone,jdbcType=VARCHAR},
+      markTwo = #{marktwo,jdbcType=VARCHAR}
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>

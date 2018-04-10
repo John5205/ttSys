@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longchang.www.mapper.IncomeMapper" >
+  <resultMap id="BaseResultMap" type="com.longchang.www.entity.Income" >
+    <id column="incomeId" property="incomeid" jdbcType="INTEGER" />
+    <result column="mineMachineName" property="minemachinename" jdbcType="VARCHAR" />
+    <result column="incomeDate" property="incomedate" jdbcType="VARCHAR" />
+    <result column="income" property="income" jdbcType="INTEGER" />
+    <result column="markOne" property="markone" jdbcType="VARCHAR" />
+    <result column="markTwo" property="marktwo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    incomeId, mineMachineName, incomeDate, income, markOne, markTwo
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.longchang.www.entity.IncomeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from wk_income
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from wk_income
+    where incomeId = #{incomeid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from wk_income
+    where incomeId = #{incomeid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.longchang.www.entity.IncomeExample" >
+    delete from wk_income
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.longchang.www.entity.Income" >
+    insert into wk_income (incomeId, mineMachineName, incomeDate, 
+      income, markOne, markTwo
+      )
+    values (#{incomeid,jdbcType=INTEGER}, #{minemachinename,jdbcType=VARCHAR}, #{incomedate,jdbcType=VARCHAR}, 
+      #{income,jdbcType=INTEGER}, #{markone,jdbcType=VARCHAR}, #{marktwo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.longchang.www.entity.Income" >
+    insert into wk_income
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="incomeid != null" >
+        incomeId,
+      </if>
+      <if test="minemachinename != null" >
+        mineMachineName,
+      </if>
+      <if test="incomedate != null" >
+        incomeDate,
+      </if>
+      <if test="income != null" >
+        income,
+      </if>
+      <if test="markone != null" >
+        markOne,
+      </if>
+      <if test="marktwo != null" >
+        markTwo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="incomeid != null" >
+        #{incomeid,jdbcType=INTEGER},
+      </if>
+      <if test="minemachinename != null" >
+        #{minemachinename,jdbcType=VARCHAR},
+      </if>
+      <if test="incomedate != null" >
+        #{incomedate,jdbcType=VARCHAR},
+      </if>
+      <if test="income != null" >
+        #{income,jdbcType=INTEGER},
+      </if>
+      <if test="markone != null" >
+        #{markone,jdbcType=VARCHAR},
+      </if>
+      <if test="marktwo != null" >
+        #{marktwo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.longchang.www.entity.IncomeExample" resultType="java.lang.Integer" >
+    select count(*) from wk_income
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update wk_income
+    <set >
+      <if test="record.incomeid != null" >
+        incomeId = #{record.incomeid,jdbcType=INTEGER},
+      </if>
+      <if test="record.minemachinename != null" >
+        mineMachineName = #{record.minemachinename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.incomedate != null" >
+        incomeDate = #{record.incomedate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.income != null" >
+        income = #{record.income,jdbcType=INTEGER},
+      </if>
+      <if test="record.markone != null" >
+        markOne = #{record.markone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.marktwo != null" >
+        markTwo = #{record.marktwo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update wk_income
+    set incomeId = #{record.incomeid,jdbcType=INTEGER},
+      mineMachineName = #{record.minemachinename,jdbcType=VARCHAR},
+      incomeDate = #{record.incomedate,jdbcType=VARCHAR},
+      income = #{record.income,jdbcType=INTEGER},
+      markOne = #{record.markone,jdbcType=VARCHAR},
+      markTwo = #{record.marktwo,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.longchang.www.entity.Income" >
+    update wk_income
+    <set >
+      <if test="minemachinename != null" >
+        mineMachineName = #{minemachinename,jdbcType=VARCHAR},
+      </if>
+      <if test="incomedate != null" >
+        incomeDate = #{incomedate,jdbcType=VARCHAR},
+      </if>
+      <if test="income != null" >
+        income = #{income,jdbcType=INTEGER},
+      </if>
+      <if test="markone != null" >
+        markOne = #{markone,jdbcType=VARCHAR},
+      </if>
+      <if test="marktwo != null" >
+        markTwo = #{marktwo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where incomeId = #{incomeid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.longchang.www.entity.Income" >
+    update wk_income
+    set mineMachineName = #{minemachinename,jdbcType=VARCHAR},
+      incomeDate = #{incomedate,jdbcType=VARCHAR},
+      income = #{income,jdbcType=INTEGER},
+      markOne = #{markone,jdbcType=VARCHAR},
+      markTwo = #{marktwo,jdbcType=VARCHAR}
+    where incomeId = #{incomeid,jdbcType=INTEGER}
+  </update>
+</mapper>
